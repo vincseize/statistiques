@@ -1,6 +1,5 @@
     <?php
     include('inc/inc_connect.php');
-
     include('inc/prenoms.php');
     include('inc/noms.php');
     include('inc/sports.php');
@@ -17,6 +16,15 @@
             if($results->num_rows == '0')
             {         
                     $sql = "INSERT INTO $table ($column) VALUES ('$name')";
+                    if($table == 'eleves'){
+                        $id_ecole = intval(random_idEcoles($conn, 'ecoles'));
+                        // echo $id_ecole;
+                        $id_sport = intval(random_idSports($conn, 'sports'));
+                        // echo $id_sport;
+                        $sql = "INSERT INTO $table ($column, id_ecole, id_sport) VALUES ('$name', '$id_ecole', '$id_sport')";
+                    }
+
+
                     if ($conn->query($sql) === TRUE) {
                         echo $name.' <font color=blue>[ insert OK ]</font>, ';
                     } else {
@@ -29,6 +37,7 @@
         }
         
     }
+
     function nom_prenom($array_noms, $array_prenoms){
         $array_nom_prenom = array();
         foreach ($array_noms as $value){
@@ -39,6 +48,39 @@
         }
         return $array_nom_prenom;
     }
+
+    function random_idEcoles($conn, $table){
+        $ids = array();
+        $sql = "SELECT id FROM $table";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                array_push($ids,$row["id"]);
+            }
+        }
+        $id = $ids[array_rand($ids)];
+        return $id;
+    }
+
+    function random_idSports($conn, $table){
+        $ids = array();
+        $sql = "SELECT id FROM $table";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                array_push($ids,$row["id"]);
+            }
+        }
+        $id = $ids[array_rand($ids)];
+        return $id;
+    }
+
+//test
+// $id_ecole = random_idEcoles($conn, 'ecoles');
+// echo $id_ecole;
+// $id_sport = random_idSports($conn, 'sports');
+// echo $id_sport;
+// exit;
 
     // on creait une liste aleatoire nom+prenom
     $array_nom_prenom = nom_prenom($array_noms, $array_prenoms);
