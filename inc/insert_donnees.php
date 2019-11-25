@@ -13,6 +13,15 @@
         echo "----------------- ON REMPLIE LA BASE <font color=blue>[$dbname]</font>";
     }
 
+    if(isset($_GET['VAR_VIDER_TABLES'])) {
+        vider_table($conn, 'prenoms');
+        vider_table($conn, 'noms');
+        vider_table($conn, 'ecoles');
+        vider_table($conn, 'sports');
+        vider_table($conn, 'eleves');
+        header('Location: index.php');
+        exit;
+    }
     
     function vider_table($conn, $table){
         $sql  = "TRUNCATE TABLE ".$table; 
@@ -54,12 +63,7 @@
 
                             $id_sport = random_idSports($conn, 'sports');
                             array_push($ids_sport,$id_sport);
-                          }
-
-                        // $id_sport = random_idSports($conn, 'sports');
-                        // $id_sport2 = '2';
-                        // $id_sport3 = '999';
-                        // array_push($ids_sport,$id_sport,$id_sport2,$id_sport3);
+                        }
 
                         // on enleve les doublons
                          $ids_sport = array_unique($ids_sport);
@@ -116,6 +120,10 @@
             }
         }
         $id = $ids[array_rand($ids)];
+
+        // aleatoire pas de sport, id null
+        $id = rand(0, 1) ? $ids[array_rand($ids)] : 'Null';
+
         return $id;
     }
 
@@ -131,11 +139,12 @@
     $array_nom_prenom = nom_prenom($array_noms, $array_prenoms);
 
     // On insert les donnees, TABLE, COL, ARRAY
+    insert_donnees($conn, 'sports', 'sport', $array_sports);
+    insert_donnees($conn, 'ecoles', 'ecole', $array_ecoles);
     insert_donnees($conn, 'prenoms', 'prenom', $array_prenoms);
     insert_donnees($conn, 'noms', 'nom', $array_noms);
     insert_donnees($conn, 'eleves', 'nom_prenom', $array_nom_prenom);
-    insert_donnees($conn, 'sports', 'sport', $array_sports);
-    insert_donnees($conn, 'ecoles', 'ecole', $array_ecoles);
+
 
     // on ferme la connection SQL
     $conn->close();
