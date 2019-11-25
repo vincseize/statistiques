@@ -5,7 +5,6 @@
     include('inc/sports.php');
     include('inc/ecoles.php');
 
-
     if(isset($_GET['VAR_VIDER'])) {
         define('VAR_VIDER', 'TRUE');
         echo "----------------- ON VIDE PUIS REMPLIE LA BASE <font color=blue>[$dbname]</font>";
@@ -14,11 +13,12 @@
         echo "----------------- ON REMPLIE LA BASE <font color=blue>[$dbname]</font>";
     }
 
+    
     function vider_table($conn, $table){
         $sql  = "TRUNCATE TABLE ".$table; 
         $results = $conn->query($sql);
         if($conn->query($sql) === TRUE){
-          echo "<br><br>-->".$table." a été vidée !";
+          echo "<br><br>--> TABLE ".$table." a été vidée !";
         }
         else{
           echo "Error: " . $sql . "<br>" . $conn->error;
@@ -26,11 +26,17 @@
     }
 
     function insert_donnees($conn, $table, $column, $array){
+        // global $conn; 
         if (VAR_VIDER=='TRUE'){
             vider_table($conn, $table);
         }
         
         echo "<br><br>----------------- Insert donnees <font color=blue>[".$table."]</font><br>";
+
+        $sql = "SELECT id FROM sports";
+        $r = $conn->query($sql);
+        $nombre_sports = $r->num_rows;
+        
         foreach ($array as $name){
             // Check if exist $value
             $sql = "SELECT $column FROM $table WHERE $column = '$name'";
@@ -40,10 +46,26 @@
                     $sql = "INSERT INTO $table ($column) VALUES ('$name')";
                     if($table == 'eleves'){
                         $id_ecole = intval(random_idEcoles($conn, 'ecoles'));
-                        // echo $id_ecole;
-                        $id_sport = intval(random_idSports($conn, 'sports'));
-                        // echo $id_sport;
-                        $sql = "INSERT INTO $table ($column, id_ecole, id_sport) VALUES ('$name', '$id_ecole', '$id_sport')";
+                        
+                        $ids_sport = array();
+                        $random_nombre_sports =  rand(0, $nombre_sports);
+
+                        for ($x = 0; $x <= $random_nombre_sports; $x++) {
+
+                            $id_sport = random_idSports($conn, 'sports');
+                            array_push($ids_sport,$id_sport);
+                          }
+
+                        // $id_sport = random_idSports($conn, 'sports');
+                        // $id_sport2 = '2';
+                        // $id_sport3 = '999';
+                        // array_push($ids_sport,$id_sport,$id_sport2,$id_sport3);
+
+                        // on enleve les doublons
+                         $ids_sport = array_unique($ids_sport);
+                        // convert to text
+                        $ids_sport = serialize($ids_sport);
+                        $sql = "INSERT INTO $table ($column, id_ecole, ids_sport) VALUES ('$name', '$id_ecole', '$ids_sport')";
                     }
 
 
