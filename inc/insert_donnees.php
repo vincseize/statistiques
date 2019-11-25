@@ -5,9 +5,31 @@
     include('inc/sports.php');
     include('inc/ecoles.php');
 
-    echo "----------------- ON REMPLIE LA BASE <font color=blue>[$dbname]</font> SI VIDE";
+
+    if(isset($_GET['VAR_VIDER'])) {
+        define('VAR_VIDER', 'TRUE');
+        echo "----------------- ON VIDE PUIS REMPLIE LA BASE <font color=blue>[$dbname]</font>";
+    } else {
+        define('VAR_VIDER', 'FALSE');
+        echo "----------------- ON REMPLIE LA BASE <font color=blue>[$dbname]</font>";
+    }
+
+    function vider_table($conn, $table){
+        $sql  = "TRUNCATE TABLE ".$table; 
+        $results = $conn->query($sql);
+        if($conn->query($sql) === TRUE){
+          echo "<br><br>-->".$table." a été vidée !";
+        }
+        else{
+          echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
 
     function insert_donnees($conn, $table, $column, $array){
+        if (VAR_VIDER=='TRUE'){
+            vider_table($conn, $table);
+        }
+        
         echo "<br><br>----------------- Insert donnees <font color=blue>[".$table."]</font><br>";
         foreach ($array as $name){
             // Check if exist $value
@@ -75,12 +97,13 @@
         return $id;
     }
 
-//test
-// $id_ecole = random_idEcoles($conn, 'ecoles');
-// echo $id_ecole;
-// $id_sport = random_idSports($conn, 'sports');
-// echo $id_sport;
-// exit;
+    // ----------- tests
+    // $id_ecole = random_idEcoles($conn, 'ecoles');
+    // echo $id_ecole;
+    // $id_sport = random_idSports($conn, 'sports');
+    // echo $id_sport;
+    // exit;
+    // -----------
 
     // on creait une liste aleatoire nom+prenom
     $array_nom_prenom = nom_prenom($array_noms, $array_prenoms);
