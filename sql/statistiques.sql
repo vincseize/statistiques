@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  Dim 24 nov. 2019 à 18:15
+-- Généré le :  lun. 25 nov. 2019 à 15:05
 -- Version du serveur :  10.1.36-MariaDB
 -- Version de PHP :  7.2.10
 
@@ -43,7 +43,7 @@ CREATE TABLE `eleves` (
   `id` int(11) NOT NULL,
   `nom_prenom` varchar(64) NOT NULL,
   `id_ecole` int(11) NOT NULL,
-  `id_sport` int(11) NOT NULL
+  `ids_sport` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
