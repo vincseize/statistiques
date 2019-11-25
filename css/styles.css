@@ -1,1 +1,80 @@
-blabla
+
+    body,html {
+        margin:0;
+        padding:0;
+        font-family: Arial;
+    }
+    .div_bt_agrandir{
+        margin:0;
+        padding:0;
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .resultats_database{
+        display: block;
+        background-color: yellow;
+    }
+    .div_show_hide{
+        background-color: yellow;
+        width:100%;
+        height:25px;
+        margin:0;
+        padding:0;
+    }
+    .show_hide{
+        background-color: yellow;
+        font-size: 16px; 
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 1px solid black;
+        width: 100%;
+        color: #588c7e;
+        font-family: monospace;
+        font-size: 16px;
+        text-align: left;
+    }
+    th {
+        background-color: #588c7e;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+    td {
+        text-align: center;
+        font-size: 14px;
+    }
+    .td_synthese{
+        text-align: left;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+    #loader {
+        background-color: grey;
+        position: absolute;
+        z-index: 9999;
+        width: 100%;
+        height: 100%;
+        opacity:0.2;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
